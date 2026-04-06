@@ -48,23 +48,31 @@ export async function analyzeImage(imageBase64: string, mimeType: string): Promi
 
   const base64Data = imageBase64.includes(',') ? imageBase64.split(',')[1] : imageBase64;
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.0-flash',
-    contents: [
-      {
-        role: 'user',
-        parts: [
-          { text: ANALYSIS_PROMPT },
-          {
-            inlineData: {
-              mimeType: mimeType || 'image/jpeg',
-              data: base64Data,
+  let response;
+  try {
+    response = await ai.models.generateContent({
+      model: 'gemini-1.5-flash',
+      contents: [
+        {
+          role: 'user',
+          parts: [
+            { text: ANALYSIS_PROMPT },
+            {
+              inlineData: {
+                mimeType: mimeType || 'image/jpeg',
+                data: base64Data,
+              },
             },
-          },
-        ],
-      },
-    ],
-  });
+          ],
+        },
+      ],
+    });
+  } catch (err) {
+    if (err instanceof Error && (err.message.includes('429') || err.message.includes('RESOURCE_EXHAUSTED') || err.message.includes('quota'))) {
+      throw new Error('API Quota Exceeded: Your Google Gemini API key has reached its usage limit. Please check your billing details or create a new key.');
+    }
+    throw err;
+  }
 
   const text = response.text || '';
   

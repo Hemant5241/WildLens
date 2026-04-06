@@ -168,7 +168,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background bg-pattern relative flex flex-col text-on-surface font-body overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-background bg-pattern relative flex flex-col text-on-surface font-body overflow-x-clip selection:bg-primary/20 selection:text-primary">
       {/* Background glow effects */}
       <div className="absolute top-0 right-[-10vw] w-[40vw] h-[40vw] rounded-full bg-primary/5 blur-[100px] pointer-events-none" />
       <div className="absolute bottom-[-10vw] left-[-10vw] w-[50vw] h-[50vw] rounded-full bg-blue-500/5 blur-[120px] pointer-events-none" />
