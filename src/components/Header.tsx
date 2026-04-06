@@ -13,7 +13,7 @@ export default function Header({ currentPage, onNavigate, onNewScan }: HeaderPro
       {/* Subtle top accent line */}
       <div className="h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
 
-      <div className="w-full max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
         {/* Logo */}
         <div
           className="flex items-center gap-3 cursor-pointer group"

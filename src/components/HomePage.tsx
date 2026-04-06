@@ -23,18 +23,18 @@ export default function HomePage({ onImageSelected, onOpenCamera }: HomePageProp
   };
 
   return (
-    <div className="flex flex-col items-center max-w-[900px] mx-auto w-full pt-8 pb-16 animate-fade-in">
+    <div className="flex flex-col items-center max-w-[900px] mx-auto w-full pt-4 sm:pt-8 pb-12 sm:pb-16 animate-fade-in px-4 sm:px-6">
       {/* Hero Section */}
-      <div className="w-full text-center mb-16 relative">
+      <div className="w-full text-center mb-10 sm:mb-16 relative">
         {/* Atmospheric orb behind headline */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
 
         {/* Animated icon */}
-        <div className="relative w-20 h-20 mx-auto mb-10">
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-10">
           <div className="absolute inset-0 rounded-full bg-primary/10 animate-breathe" />
           <div className="absolute inset-2 rounded-full bg-primary/5 animate-breathe [animation-delay:1s]" />
           <div className="relative w-full h-full rounded-full bg-surface-container-high flex items-center justify-center">
-            <ScanSearch size={32} className="text-primary animate-pulse-soft" />
+            <ScanSearch size={28} className="text-primary animate-pulse-soft" />
           </div>
         </div>
 
@@ -44,7 +44,7 @@ export default function HomePage({ onImageSelected, onOpenCamera }: HomePageProp
           AI-POWERED IDENTIFICATION
         </div>
 
-        <h1 className="font-display font-bold text-5xl md:text-7xl tracking-tight text-on-surface leading-[1.05] mb-6 relative z-10">
+        <h1 className="font-display font-bold text-3xl sm:text-5xl md:text-7xl tracking-tight text-on-surface leading-[1.05] mb-4 sm:mb-6 relative z-10">
           Discover Wildlife.
           <br />
           <span className="bg-gradient-to-r from-primary to-primary-container bg-clip-text text-transparent">
@@ -52,16 +52,16 @@ export default function HomePage({ onImageSelected, onOpenCamera }: HomePageProp
           </span>
         </h1>
 
-        <p className="font-body text-base md:text-lg text-on-surface-variant max-w-[540px] mx-auto leading-relaxed relative z-10">
-          Upload or capture a photo for instant species analysis, danger assessment, habitat insights, and conservation data.
+        <p className="font-body text-sm sm:text-base md:text-lg text-on-surface-variant max-w-[540px] mx-auto leading-relaxed relative z-10 px-2">
+          Upload or capture a photo for instant species analysis, danger assessment, and habitat insights.
         </p>
       </div>
 
       {/* Action Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-[640px] px-4 md:px-0 mb-20">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5 w-full max-w-[640px] mb-14 sm:mb-20">
         {/* Camera Card */}
         <div
-          className="group relative bg-surface-container-low/50 backdrop-blur-md rounded-2xl p-8 flex flex-col items-center gap-5 cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:shadow-card-hover hover:bg-surface-container/60"
+          className="group relative bg-surface-container-low/50 backdrop-blur-md rounded-2xl p-5 sm:p-8 flex flex-col items-center gap-3 sm:gap-5 cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:shadow-card-hover hover:bg-surface-container/60"
           onClick={onOpenCamera}
         >
           {/* Top glow line on hover */}
@@ -86,7 +86,7 @@ export default function HomePage({ onImageSelected, onOpenCamera }: HomePageProp
 
         {/* Upload Card */}
         <div
-          className="group relative bg-surface-container-low/50 backdrop-blur-md rounded-2xl p-8 flex flex-col items-center gap-5 cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:shadow-card-hover hover:bg-surface-container/60"
+          className="group relative bg-surface-container-low/50 backdrop-blur-md rounded-2xl p-5 sm:p-8 flex flex-col items-center gap-3 sm:gap-5 cursor-pointer transition-all duration-500 hover:-translate-y-1.5 hover:shadow-card-hover hover:bg-surface-container/60"
           onClick={() => fileInputRef.current?.click()}
         >
           <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-primary/0 to-transparent group-hover:via-primary/40 transition-all duration-700" />
@@ -118,7 +118,7 @@ export default function HomePage({ onImageSelected, onOpenCamera }: HomePageProp
       />
 
       {/* Feature Stats */}
-      <div className="grid grid-cols-3 gap-8 max-w-[600px] w-full px-4 mb-16">
+      <div className="grid grid-cols-3 gap-4 sm:gap-8 max-w-[600px] w-full mb-12 sm:mb-16">
         {[
           { icon: <Leaf size={20} strokeWidth={1.5} />, label: '500K+', sub: 'Species in database' },
           { icon: <Cpu size={20} strokeWidth={1.5} />, label: 'Gemini AI', sub: 'Powered engine' },

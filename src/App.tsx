@@ -189,7 +189,7 @@ function App() {
         onNewScan={handleNewScan}
       />
 
-      <main className="flex-1 w-full max-w-[1200px] mx-auto px-6 flex flex-col relative z-10 pt-20">
+      <main className="flex-1 w-full max-w-[1200px] mx-auto px-4 sm:px-6 flex flex-col relative z-10 pt-16 sm:pt-20">
         {renderPage()}
       </main>
 

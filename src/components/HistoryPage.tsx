@@ -33,11 +33,11 @@ export default function HistoryPage({ history, onSelectItem, onClearHistory, onN
   };
 
   return (
-    <div className="animate-fade-in w-full max-w-[1000px] mx-auto py-8">
+    <div className="animate-fade-in w-full max-w-[1000px] mx-auto py-4 sm:py-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-10">
         <div>
-          <h2 className="font-display font-bold text-3xl tracking-tight text-on-surface mb-1.5">
+          <h2 className="font-display font-bold text-2xl sm:text-3xl tracking-tight text-on-surface mb-1">
             Scan History
           </h2>
           <p className="font-body text-sm text-on-surface-variant">
@@ -67,7 +67,7 @@ export default function HistoryPage({ history, onSelectItem, onClearHistory, onN
         </div>
       ) : (
         /* History Grid */
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
           {history.map((item) => (
             <div
               key={item.id}

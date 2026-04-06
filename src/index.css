@@ -15,6 +15,7 @@
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='8' fill='none' stroke='%234edea3' stroke-width='1.5' opacity='0.8'/%3E%3Ccircle cx='10' cy='10' r='3' fill='%234edea3' opacity='0.9'/%3E%3C/svg%3E") 10 10, auto;
   }
 
   body {
@@ -25,15 +26,26 @@
     min-height: 100vh;
   }
 
+  /* Custom cursor for interactive elements */
+  a, button, [role="button"], input[type="file"], label[for],
+  .cursor-pointer, [onclick] {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%234edea3' stroke-width='2' opacity='0.9'/%3E%3Ccircle cx='12' cy='12' r='4' fill='%234edea3'/%3E%3C/svg%3E") 12 12, pointer;
+  }
+
+  /* Text selection cursor */
+  p, span, h1, h2, h3, h4, h5, h6, div {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ccircle cx='10' cy='10' r='8' fill='none' stroke='%234edea3' stroke-width='1.5' opacity='0.6'/%3E%3Ccircle cx='10' cy='10' r='2.5' fill='%234edea3' opacity='0.7'/%3E%3C/svg%3E") 10 10, default;
+  }
+
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
   }
   ::-webkit-scrollbar-track {
-    background: #090e19;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: #303541;
-    border-radius: 3px;
+    border-radius: 10px;
   }
   ::-webkit-scrollbar-thumb:hover {
     background: #4edea3;
@@ -41,9 +53,9 @@
 }
 
 @layer components {
-  /* Primary CTA Button — Gradient fill, no border, dark text */
+  /* Primary CTA Button — Gradient fill */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-display text-sm font-semibold tracking-wide cursor-pointer transition-all duration-300 no-underline select-none;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-display text-sm font-semibold tracking-wide transition-all duration-300 no-underline select-none;
   }
   .btn-primary {
     @apply bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold shadow-glow hover:shadow-glow-lg hover:-translate-y-0.5 active:translate-y-0;
@@ -58,7 +70,7 @@
     @apply bg-gradient-to-br from-danger to-tertiary-container text-white font-bold;
   }
 
-  /* Tags  — Ghost border style */
+  /* Tags */
   .tag {
     @apply inline-flex items-center px-3 py-1 rounded-md bg-surface-container-high/50 text-on-surface-variant text-xs font-mono tracking-wider;
   }
