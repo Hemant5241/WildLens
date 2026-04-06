@@ -20,7 +20,6 @@ function App() {
   const [error, setError] = useState<string>('');
   const [history, setHistory] = useState<ScanHistoryItem[]>([]);
 
-  // Load history from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem(HISTORY_KEY);
@@ -32,7 +31,6 @@ function App() {
     }
   }, []);
 
-  // Save history to localStorage
   const saveHistory = useCallback((items: ScanHistoryItem[]) => {
     try {
       localStorage.setItem(HISTORY_KEY, JSON.stringify(items));
@@ -111,7 +109,6 @@ function App() {
           text: shareText,
         });
       } catch {
-        // User cancelled or share failed
       }
     } else {
       try {
@@ -126,12 +123,12 @@ function App() {
   const renderPage = () => {
     if (error) {
       return (
-        <div className="error-container animate-fade-in">
-          <div className="error-icon">
-            <AlertTriangle size={48} />
+        <div className="flex flex-col items-center justify-center p-8 text-center animate-fade-in max-w-md mx-auto my-16 bg-surface-container rounded-2xl border border-danger/20">
+          <div className="w-16 h-16 rounded-full bg-danger-bg text-danger flex items-center justify-center mb-6 border border-danger/30">
+            <AlertTriangle size={32} />
           </div>
-          <h2 className="error-title">Analysis Failed</h2>
-          <p className="error-message">{error}</p>
+          <h2 className="text-xl font-bold font-display tracking-wide mb-2 text-on-surface">Analysis Failed</h2>
+          <p className="text-on-surface-variant text-sm mb-6 max-w-sm leading-relaxed">{error}</p>
           <button className="btn btn-primary" onClick={handleNewScan}>
             Try Again
           </button>
@@ -171,31 +168,35 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className="min-h-screen bg-background bg-pattern relative flex flex-col text-on-surface font-body overflow-x-hidden selection:bg-primary/20 selection:text-primary">
+      {/* Background glow effects */}
+      <div className="absolute top-0 right-[-10vw] w-[40vw] h-[40vw] rounded-full bg-primary/5 blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-[-10vw] left-[-10vw] w-[50vw] h-[50vw] rounded-full bg-blue-500/5 blur-[120px] pointer-events-none" />
+      
       <Header
         currentPage={page}
         onNavigate={setPage}
         onNewScan={handleNewScan}
       />
 
-      <main className="main-content">
+      <main className="flex-1 w-full max-w-[1200px] mx-auto p-6 flex flex-col relative z-10 pt-24">
         {renderPage()}
       </main>
 
-      <footer className="footer">
-        <div className="footer-inner">
-          <span className="home-disclaimer">
+      <footer className="w-full bg-surface/80 backdrop-blur-md border-t border-surface-container-high py-4 mt-auto">
+        <div className="w-full max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <span className="font-mono text-[0.65rem] tracking-[0.2em] text-on-surface-muted uppercase">
             WildLens © {new Date().getFullYear()} · Powered by Gemini AI
           </span>
-          <div className="footer-indicators">
-            <div className="footer-indicator">
-              <div className="footer-indicator-dot" />
+          <div className="flex flex-wrap justify-center gap-4">
+            <div className="flex items-center gap-2 font-mono text-[0.65rem] tracking-[0.1em] text-on-surface-variant">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               Status: Online
             </div>
-            <div className="footer-indicator">
+            <div className="flex items-center gap-2 font-mono text-[0.65rem] tracking-[0.1em] text-on-surface-variant">
               Database: Global
             </div>
-            <div className="footer-indicator">
+            <div className="flex items-center gap-2 font-mono text-[0.65rem] tracking-[0.1em] text-on-surface-variant">
               Engine: Gemini Flash
             </div>
           </div>

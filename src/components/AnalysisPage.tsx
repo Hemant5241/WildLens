@@ -31,32 +31,40 @@ export default function AnalysisPage() {
   }, []);
 
   return (
-    <div className="analysis-page">
-      <div className="analysis-scanner">
-        <div className="analysis-scanner-ring" />
-        <div className="analysis-scanner-ring" />
-        <div className="analysis-scanner-ring" />
-        <div className="analysis-scanner-center">
+    <div className="flex flex-col items-center justify-center py-[10vh] max-w-[600px] mx-auto w-full text-center">
+      <div className="relative w-[150px] h-[150px] flex items-center justify-center mb-12">
+        <div className="absolute inset-0 border-[3px] border-primary border-r-transparent border-b-transparent rounded-full animate-scanner-rotate" />
+        <div className="absolute inset-[15px] border-[2px] border-primary/40 border-r-transparent border-b-transparent rounded-full animate-scanner-rotate [animation-direction:reverse] [animation-duration:1.5s]" />
+        <div className="absolute inset-[30px] border border-primary/20 border-r-transparent border-b-transparent rounded-full animate-scanner-rotate [animation-duration:3s]" />
+        
+        <div className="text-primary animate-scanner-pulse">
           <ScanSearch size={40} />
         </div>
       </div>
 
-      <h2 className="analysis-title">ANALYZING SPECIMEN...</h2>
-      <p className="analysis-subtitle">AI is processing your image. This may take a moment.</p>
+      <h2 className="font-display font-bold text-2xl tracking-[0.2em] text-on-surface mb-2 animate-pulse-ring uppercase">
+        ANALYZING SPECIMEN...
+      </h2>
+      <p className="font-body text-on-surface-variant mb-12">
+        AI is processing your image. This may take a moment.
+      </p>
 
-      <div className="analysis-telemetry">
-        {TELEMETRY_MESSAGES.slice(0, visibleLines).map((msg, i) => (
-          <div
-            key={i}
-            className={`analysis-telemetry-line ${
-              i === visibleLines - 1 ? 'active' : 'completed'
-            }`}
-            style={{ animationDelay: `${i * 0.1}s` }}
-          >
-            <div className="analysis-telemetry-dot" />
-            <span>{msg}</span>
-          </div>
-        ))}
+      <div className="w-full flex flex-col gap-3 font-mono text-xs tracking-wider text-left bg-surface/50 border border-outline-variant p-6 rounded-xl relative overflow-hidden backdrop-blur-sm min-h-[300px]">
+        {TELEMETRY_MESSAGES.slice(0, visibleLines).map((msg, i) => {
+          const isLast = i === visibleLines - 1;
+          return (
+            <div
+              key={i}
+              className={`flex items-center gap-3 animate-telemetry-fade ${
+                isLast ? 'text-primary' : 'text-on-surface-muted'
+              }`}
+              style={{ animationDelay: `${i * 0.1}s` }}
+            >
+              <div className={`w-2 h-2 rounded-full ${isLast ? 'bg-primary animate-telemetry-blink shadow-[0_0_8px_rgba(78,222,163,0.8)]' : 'bg-on-surface-muted'}`} />
+              <span>{msg}</span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

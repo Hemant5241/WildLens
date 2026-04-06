@@ -55,7 +55,6 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
     ctx.drawImage(video, 0, 0);
     const imageData = canvas.toDataURL('image/jpeg', 0.9);
     
-    // Stop camera
     stream?.getTracks().forEach(track => track.stop());
     
     onCapture(imageData, 'image/jpeg');
@@ -66,18 +65,21 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
   };
 
   return (
-    <div className="camera-overlay">
-      <div className="camera-header">
-        <div className="camera-title">Wildlife Sensor Unit</div>
-        <button className="btn btn-ghost" onClick={onClose}>
+    <div className="fixed inset-0 bg-background/95 z-[100] flex flex-col justify-center items-center backdrop-blur-md animate-fade-in px-4">
+      <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-10 w-[calc(100%-48px)]">
+        <div className="font-mono text-xs tracking-widest text-primary uppercase flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-danger animate-pulse" />
+          Wildlife Sensor Unit
+        </div>
+        <button className="w-10 h-10 rounded-full bg-surface-container-high border border-outline flex justify-center items-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" onClick={onClose}>
           <X size={20} />
         </button>
       </div>
 
-      <div className="camera-body">
+      <div className="relative w-full max-w-[500px] aspect-[3/4] sm:aspect-square bg-surface-container-lowest rounded-3xl overflow-hidden shadow-2xl border border-surface-container shadow-primary/5">
         {error ? (
-          <div className="error-container">
-            <p className="error-message">{error}</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-20">
+            <p className="text-danger mb-4 font-body">{error}</p>
             <button className="btn btn-primary" onClick={startCamera}>
               Retry
             </button>
@@ -89,25 +91,40 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
               autoPlay
               playsInline
               muted
-              className="camera-video"
+              className="w-full h-full object-cover"
             />
-            <div className="camera-viewfinder">
-              <div className="camera-viewfinder-corner tl" />
-              <div className="camera-viewfinder-corner tr" />
-              <div className="camera-viewfinder-corner bl" />
-              <div className="camera-viewfinder-corner br" />
+            
+            {/* Viewfinder Overlay */}
+            <div className="absolute inset-8 pointer-events-none">
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-primary" />
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary" />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary" />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-primary" />
+              
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 text-primary/50 flex justify-center items-center">
+                <div className="w-0.5 h-full bg-current absolute" />
+                <div className="w-full h-0.5 bg-current absolute" />
+              </div>
             </div>
           </>
         )}
       </div>
 
       {!error && (
-        <div className="camera-controls">
-          <button className="btn btn-ghost" onClick={toggleCamera}>
+        <div className="absolute bottom-10 left-0 right-0 flex justify-center items-center gap-8 z-10 w-[calc(100%-48px)]">
+          <button className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-highest transition-colors" onClick={toggleCamera}>
             <SwitchCamera size={22} />
           </button>
-          <button className="camera-capture-btn" onClick={handleCapture} />
-          <div style={{ width: 38 }} />
+          
+          {/* Capture button */}
+          <div 
+            className="w-20 h-20 rounded-full border-[3px] border-primary p-1 cursor-pointer hover:scale-105 transition-transform"
+            onClick={handleCapture}
+          >
+            <div className="w-full h-full rounded-full bg-on-surface hover:bg-on-surface-variant transition-colors" />
+          </div>
+          
+          <div className="w-12 h-12" /> {/* Spacer for alignment */}
         </div>
       )}
 
