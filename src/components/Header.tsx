@@ -1,4 +1,4 @@
-import { Eye, Languages } from 'lucide-react';
+import { Eye, History as HistoryIcon, Plus, ArrowLeft } from 'lucide-react';
 import type { AppPage } from '../types';
 
 interface HeaderProps {
@@ -9,46 +9,56 @@ interface HeaderProps {
 
 export default function Header({ currentPage, onNavigate, onNewScan }: HeaderProps) {
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-surface-container-high h-[70px] flex items-center">
-      {/* Top subtle gradient border equivalent */}
-      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-background via-primary/30 to-background" />
-      
-      <div className="w-full max-w-[1200px] mx-auto px-6 flex items-center justify-between">
-        <div 
-          className="flex items-center gap-3 cursor-pointer group" 
+    <header className="fixed top-0 left-0 right-0 z-50 bg-surface-variant/60 backdrop-blur-[20px]">
+      {/* Subtle top accent line */}
+      <div className="h-[1px] bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+
+      <div className="w-full max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <div
+          className="flex items-center gap-3 cursor-pointer group"
           onClick={() => onNavigate('home')}
         >
-          <div className="w-[34px] h-[34px] rounded-lg bg-surface-container-high flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors duration-300">
-            <Eye size={20} className="group-hover:scale-110 transition-transform duration-300" />
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-primary-container flex items-center justify-center text-on-primary shadow-glow transition-shadow duration-500 group-hover:shadow-glow-lg">
+            <Eye size={18} strokeWidth={2.5} />
           </div>
           <div>
-            <div className="font-display font-bold text-base tracking-wide text-on-surface">WildLens</div>
-            <div className="font-mono text-[0.55rem] tracking-[0.2em] text-on-surface-variant uppercase mt-[2px]">AI Wildlife Intelligence</div>
+            <div className="font-display font-bold text-[15px] tracking-wide text-on-surface leading-none">
+              WildLens
+            </div>
+            <div className="font-mono text-[9px] tracking-[0.25em] text-on-surface-muted uppercase mt-0.5">
+              AI Wildlife Intelligence
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
-          {currentPage === 'history' && (
-            <button className="btn btn-secondary" onClick={() => onNavigate('home')}>
-              Home
+        {/* Navigation Actions */}
+        <nav className="flex items-center gap-2">
+          {currentPage !== 'home' && currentPage !== 'analysis' && (
+            <button
+              className="btn btn-ghost text-xs"
+              onClick={() => onNavigate('home')}
+            >
+              <ArrowLeft size={14} />
+              <span className="hidden sm:inline">Home</span>
             </button>
           )}
-          
+
           {currentPage === 'results' && (
-            <button className="btn btn-primary" onClick={onNewScan}>
+            <button className="btn btn-primary text-xs" onClick={onNewScan}>
+              <Plus size={14} />
               New Scan
             </button>
           )}
 
-          <button 
-            className="btn btn-ghost" 
-            onClick={() => onNavigate('history')} 
-            title="Scan History"
+          <button
+            className="btn btn-ghost text-xs"
+            onClick={() => onNavigate('history')}
           >
-            <Languages size={16} />
+            <HistoryIcon size={14} />
             <span className="hidden sm:inline">History</span>
           </button>
-        </div>
+        </nav>
       </div>
     </header>
   );

@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import { X, SwitchCamera } from 'lucide-react';
+import { X, SwitchCamera, Aperture } from 'lucide-react';
 
 interface CameraCaptureProps {
   onCapture: (imageData: string, mimeType: string) => void;
@@ -54,9 +54,9 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
 
     ctx.drawImage(video, 0, 0);
     const imageData = canvas.toDataURL('image/jpeg', 0.9);
-    
+
     stream?.getTracks().forEach(track => track.stop());
-    
+
     onCapture(imageData, 'image/jpeg');
   };
 
@@ -65,21 +65,26 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
   };
 
   return (
-    <div className="fixed inset-0 bg-background/95 z-[100] flex flex-col justify-center items-center backdrop-blur-md animate-fade-in px-4">
-      <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-10 w-[calc(100%-48px)]">
-        <div className="font-mono text-xs tracking-widest text-primary uppercase flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-danger animate-pulse" />
-          Wildlife Sensor Unit
+    <div className="fixed inset-0 bg-background/95 backdrop-blur-xl z-[100] flex flex-col justify-center items-center animate-fade-in px-4">
+      {/* Top bar */}
+      <div className="absolute top-6 left-6 right-6 flex justify-between items-center z-10">
+        <div className="font-mono text-[10px] tracking-[0.2em] text-primary uppercase flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full bg-danger animate-blink" />
+          Wildlife Sensor Active
         </div>
-        <button className="w-10 h-10 rounded-full bg-surface-container-high border border-outline flex justify-center items-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors" onClick={onClose}>
-          <X size={20} />
+        <button
+          className="w-10 h-10 rounded-full bg-surface-container-high/60 backdrop-blur-md flex justify-center items-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 transition-all duration-300"
+          onClick={onClose}
+        >
+          <X size={18} />
         </button>
       </div>
 
-      <div className="relative w-full max-w-[500px] aspect-[3/4] sm:aspect-square bg-surface-container-lowest rounded-3xl overflow-hidden shadow-2xl border border-surface-container shadow-primary/5">
+      {/* Camera Preview */}
+      <div className="relative w-full max-w-[500px] aspect-[3/4] sm:aspect-square rounded-3xl overflow-hidden shadow-ambient">
         {error ? (
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-20">
-            <p className="text-danger mb-4 font-body">{error}</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center bg-surface-container-low z-20">
+            <p className="text-danger font-body text-sm mb-4">{error}</p>
             <button className="btn btn-primary" onClick={startCamera}>
               Retry
             </button>
@@ -93,38 +98,45 @@ export default function CameraCapture({ onCapture, onClose }: CameraCaptureProps
               muted
               className="w-full h-full object-cover"
             />
-            
-            {/* Viewfinder Overlay */}
+
+            {/* Viewfinder corners */}
             <div className="absolute inset-8 pointer-events-none">
-              <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-primary" />
-              <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-primary" />
-              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-primary" />
-              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-primary" />
-              
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 text-primary/50 flex justify-center items-center">
-                <div className="w-0.5 h-full bg-current absolute" />
-                <div className="w-full h-0.5 bg-current absolute" />
+              <div className="absolute top-0 left-0 w-10 h-10 border-t-2 border-l-2 border-primary/50 rounded-tl-lg" />
+              <div className="absolute top-0 right-0 w-10 h-10 border-t-2 border-r-2 border-primary/50 rounded-tr-lg" />
+              <div className="absolute bottom-0 left-0 w-10 h-10 border-b-2 border-l-2 border-primary/50 rounded-bl-lg" />
+              <div className="absolute bottom-0 right-0 w-10 h-10 border-b-2 border-r-2 border-primary/50 rounded-br-lg" />
+
+              {/* Center crosshair */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <div className="w-6 h-[1px] bg-primary/30 absolute top-1/2 left-1/2 -translate-x-1/2" />
+                <div className="w-[1px] h-6 bg-primary/30 absolute top-1/2 left-1/2 -translate-y-1/2" />
               </div>
             </div>
           </>
         )}
       </div>
 
+      {/* Controls */}
       {!error && (
-        <div className="absolute bottom-10 left-0 right-0 flex justify-center items-center gap-8 z-10 w-[calc(100%-48px)]">
-          <button className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-highest transition-colors" onClick={toggleCamera}>
-            <SwitchCamera size={22} />
+        <div className="flex justify-center items-center gap-10 mt-10 z-10">
+          <button
+            className="w-12 h-12 rounded-full bg-surface-container-high/60 backdrop-blur-md flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/60 transition-all duration-300"
+            onClick={toggleCamera}
+          >
+            <SwitchCamera size={20} />
           </button>
-          
+
           {/* Capture button */}
-          <div 
-            className="w-20 h-20 rounded-full border-[3px] border-primary p-1 cursor-pointer hover:scale-105 transition-transform"
+          <button
+            className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-container p-1 cursor-pointer hover:scale-105 transition-transform duration-300 shadow-glow hover:shadow-glow-lg group"
             onClick={handleCapture}
           >
-            <div className="w-full h-full rounded-full bg-on-surface hover:bg-on-surface-variant transition-colors" />
-          </div>
-          
-          <div className="w-12 h-12" /> {/* Spacer for alignment */}
+            <div className="w-full h-full rounded-full bg-on-primary flex items-center justify-center group-hover:bg-on-primary-container transition-colors">
+              <Aperture size={28} className="text-primary" />
+            </div>
+          </button>
+
+          <div className="w-12 h-12" /> {/* Spacer */}
         </div>
       )}
 

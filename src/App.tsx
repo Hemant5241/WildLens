@@ -7,7 +7,7 @@ import HistoryPage from './components/HistoryPage';
 import CameraCapture from './components/CameraCapture';
 import { analyzeImage } from './services/geminiService';
 import type { AppPage, AnalysisResult, ScanHistoryItem } from './types';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, RotateCcw } from 'lucide-react';
 
 const HISTORY_KEY = 'wildlens-history';
 const MAX_HISTORY = 20;
@@ -96,7 +96,7 @@ function App() {
 
   const handleShare = useCallback(async () => {
     if (!result) return;
-    
+
     const shareText = `🔍 WildLens AI identified: ${result.commonName} (${result.scientificName})\n` +
       `📊 Confidence: ${result.confidence}%\n` +
       `⚠️ Danger Level: ${result.dangerLevel}\n` +
@@ -108,8 +108,7 @@ function App() {
           title: `WildLens: ${result.commonName}`,
           text: shareText,
         });
-      } catch {
-      }
+      } catch { /* cancelled */ }
     } else {
       try {
         await navigator.clipboard.writeText(shareText);
@@ -123,15 +122,25 @@ function App() {
   const renderPage = () => {
     if (error) {
       return (
-        <div className="flex flex-col items-center justify-center p-8 text-center animate-fade-in max-w-md mx-auto my-16 bg-surface-container rounded-2xl border border-danger/20">
-          <div className="w-16 h-16 rounded-full bg-danger-bg text-danger flex items-center justify-center mb-6 border border-danger/30">
-            <AlertTriangle size={32} />
+        <div className="flex flex-col items-center justify-center py-20 animate-fade-in max-w-md mx-auto text-center">
+          <div className="glass-card p-10 rounded-2xl w-full">
+            {/* Error icon */}
+            <div className="w-16 h-16 rounded-2xl bg-danger/10 text-danger flex items-center justify-center mx-auto mb-6">
+              <AlertTriangle size={28} />
+            </div>
+
+            <h2 className="font-display font-bold text-xl tracking-wide text-on-surface mb-3">
+              Analysis Failed
+            </h2>
+            <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-8 max-w-sm mx-auto">
+              {error}
+            </p>
+
+            <button className="btn btn-primary w-full" onClick={handleNewScan}>
+              <RotateCcw size={16} />
+              Try Again
+            </button>
           </div>
-          <h2 className="text-xl font-bold font-display tracking-wide mb-2 text-on-surface">Analysis Failed</h2>
-          <p className="text-on-surface-variant text-sm mb-6 max-w-sm leading-relaxed">{error}</p>
-          <button className="btn btn-primary" onClick={handleNewScan}>
-            Try Again
-          </button>
         </div>
       );
     }
@@ -168,36 +177,37 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background bg-pattern relative flex flex-col text-on-surface font-body overflow-x-clip selection:bg-primary/20 selection:text-primary">
-      {/* Background glow effects */}
-      <div className="absolute top-0 right-[-10vw] w-[40vw] h-[40vw] rounded-full bg-primary/5 blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-[-10vw] left-[-10vw] w-[50vw] h-[50vw] rounded-full bg-blue-500/5 blur-[120px] pointer-events-none" />
-      
+    <div className="min-h-screen bg-background relative flex flex-col text-on-surface font-body overflow-x-clip selection:bg-primary/20 selection:text-primary">
+      {/* Atmospheric background orbs */}
+      <div className="fixed top-[-20vh] right-[-10vw] w-[60vw] h-[60vh] rounded-full bg-primary/[0.03] blur-[150px] pointer-events-none" />
+      <div className="fixed bottom-[-20vh] left-[-15vw] w-[50vw] h-[50vh] rounded-full bg-info/[0.02] blur-[150px] pointer-events-none" />
+      <div className="fixed top-[40vh] left-[30vw] w-[30vw] h-[30vh] rounded-full bg-primary/[0.015] blur-[120px] pointer-events-none" />
+
       <Header
         currentPage={page}
         onNavigate={setPage}
         onNewScan={handleNewScan}
       />
 
-      <main className="flex-1 w-full max-w-[1200px] mx-auto p-6 flex flex-col relative z-10 pt-24">
+      <main className="flex-1 w-full max-w-[1200px] mx-auto px-6 flex flex-col relative z-10 pt-20">
         {renderPage()}
       </main>
 
-      <footer className="w-full bg-surface/80 backdrop-blur-md border-t border-surface-container-high py-4 mt-auto">
-        <div className="w-full max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <span className="font-mono text-[0.65rem] tracking-[0.2em] text-on-surface-muted uppercase">
+      <footer className="w-full bg-surface-container-lowest/80 backdrop-blur-md py-5 mt-auto relative z-10">
+        <div className="w-full max-w-[1200px] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-3">
+          <span className="font-mono text-[10px] tracking-[0.2em] text-on-surface-muted/40 uppercase">
             WildLens © {new Date().getFullYear()} · Powered by Gemini AI
           </span>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="flex items-center gap-2 font-mono text-[0.65rem] tracking-[0.1em] text-on-surface-variant">
-              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-              Status: Online
+          <div className="flex flex-wrap justify-center gap-5">
+            <div className="flex items-center gap-2 font-mono text-[10px] tracking-[0.1em] text-on-surface-muted/40">
+              <div className="w-1.5 h-1.5 rounded-full bg-primary/60 animate-pulse-soft" />
+              Online
             </div>
-            <div className="flex items-center gap-2 font-mono text-[0.65rem] tracking-[0.1em] text-on-surface-variant">
+            <div className="font-mono text-[10px] tracking-[0.1em] text-on-surface-muted/40">
               Database: Global
             </div>
-            <div className="flex items-center gap-2 font-mono text-[0.65rem] tracking-[0.1em] text-on-surface-variant">
-              Engine: Gemini Flash
+            <div className="font-mono text-[10px] tracking-[0.1em] text-on-surface-muted/40">
+              Engine: Gemini 2.5 Flash
             </div>
           </div>
         </div>
